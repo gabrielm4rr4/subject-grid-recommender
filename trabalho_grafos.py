@@ -1,63 +1,64 @@
+import json
 # Função que percorre o grafo e define as matérias já cursadas
-def define_materias_cursadas(materias_cursadas):
+def define_materias_cursadas(materias_cursadas = []):
     # Colore o grafo inicial com todas matérias com status "Pendente" e define como "Cursadas" caso esteja na lista de "materias_cursadas" dada no input do aluno
-    dicionarioMaterias = {
-        0: {'Nome': 'Fundamentos de Programação', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [1, 13, 35, 71]},
-        1: {'Nome': 'Programação Orientada a Objetos', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [2, 7, 15, 37, 71]},
-        2: {'Nome': 'Programação Web', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [27, 31, 36, 40, 71]},
-        3: {'Nome': 'Engenharia de Software I', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [30, 31, 32, 33, 34, 38, 40, 71]},
-        4: {'Nome': 'Programação Lógica e Funcional', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [17, 71]},
-        5: {'Nome': 'Banco de Dados I', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [40, 43, 45, 46, 71]},
-        6: {'Nome': 'Inteligência Artificial', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [71]},
-        7: {'Nome': 'Introdução à Computação Visual', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [47, 48, 71]},
-        8: {'Nome': 'Redes de Computadores', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [52, 53, 54, 55, 56, 71]},
-        9: {'Nome': 'Sistemas Operacionais', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [8, 71]},
-        10: {'Nome': 'Arquitetura de Computadores I', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [11, 71]},
-        11: {'Nome': 'Arquitetura de Computadores II', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [9, 12, 71]},
-        12: {'Nome': 'Sistemas Embarcados', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [71]},
-        13: {'Nome': 'Algoritmos e Estruturas de Dados I', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [9, 12, 14, 22, 23, 41, 71]},
-        14: {'Nome': 'Algoritmos e Estruturas de Dados II', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [5, 16, 71]},
-        15: {'Nome': 'Análise e Projeto Orientados a Objeto', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [71]},
-        16: {'Nome': 'Projeto e Análise de Algoritmos', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [17, 71]},
-        17: {'Nome': 'Teoria da Computação', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [18]},
-        18: {'Nome': 'Compiladores', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': []},
-        19: {'Nome': 'Cálculo A', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [7, 20, 22, 24, 25, 71]},
-        20: {'Nome': 'Cálculo B', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [71]},
-        21: {'Nome': 'Matemática Discreta', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [4, 22, 48, 71]},
-        22: {'Nome': 'Métodos Matemáticos para Análise de Dados', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [6, 44, 47, 49, 50, 51, 71]},
-        23: {'Nome': 'Algoritmos em Grafos', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [16, 49, 50, 51, 71]},
-        24: {'Nome': 'Modelagem Computacional', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': []},
-        25: {'Nome': 'Cálculo Numérico para Computação', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [47, 48]},
-        26: {'Nome': 'Computação e Sociedade', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': []},
-        27: {'Nome': 'Interação Humano-Computador', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': []},
-        28: {'Nome': 'Metodologia Científica', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': []},
-        29: {'Nome': 'Projeto Integrado', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [71]},
-        30: {'Nome': 'Arquitetura de Software', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        31: {'Nome': 'Padrões de Projeto', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [37]},
-        32: {'Nome': 'Engenharia de Software Experimental', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        33: {'Nome': 'Tópicos em DES I', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        34: {'Nome': 'Tópicos em DES II', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        35: {'Nome': 'Desenvolvimento de Jogos', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        36: {'Nome': 'Desenvolvimento para Dispositivos Móveis', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        37: {'Nome': 'Reutilização de Software', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        38: {'Nome': 'Engenharia de Software II', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [37, 39]},
-        39: {'Nome': 'Gerência de projetos de software', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        40: {'Nome': 'Desenvolvimento de sistemas web', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        41: {'Nome': 'Maratona de programação I', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [42]},
-        42: {'Nome': 'Maratona de programação II', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        43: {'Nome': 'Banco de Dados II', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        44: {'Nome': 'Introdução à Análise de Dados', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [46]},
-        45: {'Nome': 'Banco de Dados noSQL', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        46: {'Nome': 'Tópicos em PAD', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        47: {'Nome': 'Modelagem Geométrica e Visual', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        48: {'Nome': 'Visão Computacional', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        49: {'Nome': 'Métodos Exatos', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        50: {'Nome': 'Metaheurísticas', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        51: {'Nome': 'Tópicos em MCO', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        52: {'Nome': 'Auditoria em Segurança de SI', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        53: {'Nome': 'Computação em Nuvem', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        54: {'Nome': 'Programação Paralela', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        55: {'Nome': 'Sistemas Distribuidos', 'status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [57]},
+    grafoCCO = {
+        0: {'Nome': 'Fundamentos de Programação', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [], 'Semestre': 1},
+        1: {'Nome': 'Programação Orientada a Objetos', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [0], 'Semestre': 3},
+        2: {'Nome': 'Programação Web', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [1], 'Semestre': 4},
+        3: {'Nome': 'Engenharia de Software I', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [], 'Semestre': 3},
+        4: {'Nome': 'Programação Lógica e Funcional', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [21], 'Semestre': 2},
+        5: {'Nome': 'Banco de Dados I', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [14], 'Semestre': 5},
+        6: {'Nome': 'Inteligência Artificial', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [22], 'Semestre': 5},
+        7: {'Nome': 'Introdução à Computação Visual', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [22, 1], 'Semestre': 5},
+        8: {'Nome': 'Redes de Computadores', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [9], 'Semestre': 4},
+        9: {'Nome': 'Sistemas Operacionais', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [13, 11], 'Semestre': 3},
+        10: {'Nome': 'Arquitetura de Computadores I', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [], 'Semestre': 1},
+        11: {'Nome': 'Arquitetura de Computadores II', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [10], 'Semestre': 2},
+        12: {'Nome': 'Sistemas Embarcados', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [13, 11], 'Semestre': 4},
+        13: {'Nome': 'Algoritmos e Estruturas de Dados I', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [0], 'Semestre': 2},
+        14: {'Nome': 'Algoritmos e Estruturas de Dados II', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [13], 'Semestre': 3},
+        15: {'Nome': 'Análise e Projeto Orientados a Objeto', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [1], 'Semestre': 5},
+        16: {'Nome': 'Projeto e Análise de Algoritmos', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [14, 21, 23], 'Semestre': 4},
+        17: {'Nome': 'Teoria da Computação', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [4, 16], 'Semestre': 5},
+        18: {'Nome': 'Compiladores', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [17], 'Semestre': 6},
+        19: {'Nome': 'Cálculo A', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [], 'Semestre': 1},
+        20: {'Nome': 'Cálculo B', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [19], 'Semestre': 2},
+        21: {'Nome': 'Matemática Discreta', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [], 'Semestre': 1},
+        22: {'Nome': 'Métodos Matemáticos para Análise de Dados', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [19, 13, 21], 'Semestre': 3},
+        23: {'Nome': 'Algoritmos em Grafos', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [13], 'Semestre': 3},
+        24: {'Nome': 'Modelagem Computacional', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [19], 'Semestre': 2},
+        25: {'Nome': 'Cálculo Numérico para Computação', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [19], 'Semestre': 4},
+        26: {'Nome': 'Computação e Sociedade', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [], 'Semestre': 7},
+        27: {'Nome': 'Interação Humano-Computador', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [2], 'Semestre': 6},
+        28: {'Nome': 'Metodologia Científica', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [], 'Co-Requisitos': [71], 'Semestre': 7},
+        29: {'Nome': 'Projeto Integrado', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [], 'Semestre': 1},
+        30: {'Nome': 'Arquitetura de Software', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        31: {'Nome': 'Padrões de Projeto', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [37]},
+        32: {'Nome': 'Engenharia de Software Experimental', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        33: {'Nome': 'Tópicos em DES I', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        34: {'Nome': 'Tópicos em DES II', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        35: {'Nome': 'Desenvolvimento de Jogos', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        36: {'Nome': 'Desenvolvimento para Dispositivos Móveis', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        37: {'Nome': 'Reutilização de Software', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        38: {'Nome': 'Engenharia de Software II', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [37, 39]},
+        39: {'Nome': 'Gerência de projetos de software', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        40: {'Nome': 'Desenvolvimento de sistemas web', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        41: {'Nome': 'Maratona de programação I', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [42]},
+        42: {'Nome': 'Maratona de programação II', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        43: {'Nome': 'Banco de Dados II', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        44: {'Nome': 'Introdução à Análise de Dados', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [46]},
+        45: {'Nome': 'Banco de Dados noSQL', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        46: {'Nome': 'Tópicos em PAD', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        47: {'Nome': 'Modelagem Geométrica e Visual', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        48: {'Nome': 'Visão Computacional', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        49: {'Nome': 'Métodos Exatos', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        50: {'Nome': 'Metaheurísticas', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        51: {'Nome': 'Tópicos em MCO', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        52: {'Nome': 'Auditoria em Segurança de SI', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        53: {'Nome': 'Computação em Nuvem', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        54: {'Nome': 'Programação Paralela', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
+        55: {'Nome': 'Sistemas Distribuidos', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [57]},
         56: {'Nome': 'Tópicos em RSC', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
         57: {'Nome': 'Simulação e Avaliação de Desempenho', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
         58: {'Nome': 'Ciências Humanas e Sociais', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
@@ -68,58 +69,107 @@ def define_materias_cursadas(materias_cursadas):
         63: {'Nome': 'Psicologia Organizacional e Psicologia do Trabalho', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
         64: {'Nome': 'Tópicos em AHC', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
         65: {'Nome': 'Introdução à Administração', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [68]},
-        66: {'Nome': 'Empreendedorismo e Inovação', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [70]},
+        66: {'Nome': 'Empreendedorismo e Inovação', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [70], 'Semestre': 1},
         67: {'Nome': 'Comportamento Organizacional I', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
         68: {'Nome': 'Gestão e Governança de TI', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
         69: {'Nome': 'Economia da Informação', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
         70: {'Nome': 'Empreendedorismo Técnológico', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': []},
-        71: {'Nome': 'TCC1', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [72]},
-        72: {'Nome': 'TCC2', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos':[]}
+        71: {'Nome': 'TCC1', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [], 'Co-Requisitos': [28], 'Semestre': 7},
+        72: {'Nome': 'TCC2', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos':[71], 'Semestre': 8},
     }
-    
-    return grafo_atualizado
-    
+
+    # For para analisar quais matérias já foram cursadas 
+    for materia_info in grafoCCO.values():
+        if materia_info['Nome'] in materias_cursadas:
+            materia_info['Status'] = 'Cursada'
+
+    return grafoCCO
+
 # Função para recomendar matérias optativas com base nas informações do estudante
 def recomendar_materias_optativas(G, area_desejada):
-    arrayOptativasPrimario = [] # Optativas da área de conhecimento desejada
-    arrayOptativasSecundario = [] # Optativas fora da área de conhecimento
 
-    for node, data in G.nodes(data=True):
-        if data['tipo'] == 'optativa' and data['area_conhecimento'] == area_desejada: #Verificar somente não cursadas
-            arrayOptativasPrimario.append(node)
+    # 1) Essas matéria é da área de atuação do interesse do aluno?
+    identificacao_area_de_atuacao(indice,grafoColorido)
 
-    # Criar o laço de repetição que acrescenta as matérias no segundo array
-    # Critérios serão: matéria é ofertada no semestre atual, não é obrigatória, não é da área de conhecimento desejada
+    pass
 
-    return arrayOptativasPrimario, arrayOptativasSecundario
+def identificacao_area_de_atuacao (indice_materia, grafoColorido):
+    pass
 
-# Função para recomendar matérias obrigatórias com base nas informações do estudante
-def recomendar_materias_obrigatórias(G, ano_ingresso, ano, semestre, materias_cursadas, area_prioritaria):
-    # Lógica para recomendação de matérias com base nos parâmetros fornecidos
-    # Aqui, você pode implementar a lógica específica para recomendar matérias com base nos critérios desejados
+def recomendar_materias_obrigatórias(grafoColorido, semestre_aluno = 1):
+    lista_materias_pendentes_obrigatorias = materias_pendentes_obrigatorias(grafoColorido)
 
-    # Aqui serão chamada as várias funções que vamos usar pra verificar o grafo e recomendar as matérias
+    relevancia_materias_obrigatorias = {}
+    for id in lista_materias_pendentes_obrigatorias:
+        # Armazena em uma lista o indice, número de relevância e a quantidade de materias as quais essa mesma matéria é pré-requisito
+        relevancia_materias_obrigatorias[id] = definir_relevancia_materia(id, grafoColorido, semestre_aluno)
 
-    # Retornar um array de objetos, no qual cada posição será referente a uma matéria que deve ser cursada
-    # Os atributos de cada objeto serão: nome da matéria, código da matéria, periodo(semestre) ofertada
-    # relevância (montar uma lista que irá definir a importância de cursar essa matéria 0 - 10), legenda (motivo da matéria ter sido selecionada)
+    ranking_materias_obrigatorias = ranking_materias(relevancia_materias_obrigatorias)
 
-    # Com base no grau de relevância calculado, preparar uma mensagem pré-definida do motivo
+    return ranking_materias_obrigatorias
 
-    arrayObrigatóriasLimite = [] # Matérias obrigatórias ordenadas pelo grau de relevância respeitando o limite de matérias definido pelo usuário
-    arrayObrigatóriasExtra = [] # Restante das matérias obrigatórias que ele pode puxar no semestre que ficaram de fora do array principal
-    # por terem grau de relevância menor do que as primeiras, mas servem como segunda opção caso haja conflito de horário ou qualquer outro impedimento
-    return arrayObrigatóriasLimite, arrayObrigatóriasExtra
+# Função responsável por listar os indíces das matérias obrigatórias que estão pendentes
+def materias_pendentes_obrigatorias(grafoColorido):
+    indices_materias_pendentes_obrigatorias = []
+
+    for indice, materia in grafoColorido.items():
+        if materia['Tipo'] == 'Obrigatoria' and materia['Status'] == 'Pendente':
+            indices_materias_pendentes_obrigatorias.append(indice)
+
+    return indices_materias_pendentes_obrigatorias
+
+def definir_relevancia_materia(id, grafoColorido, semestre_aluno):
+    materia = grafoColorido[id]
+
+    qtd_pre_requisito_materia = len(materia['Pré-Requisitos'])
+    qtd_materia_atrasada = materia_atrasada(materia, semestre_aluno)
+    qtd_materias_dependentes = contar_pre_requisitos(id, grafoColorido)
+
+    return {'nome': materia['Nome'], 'qtd_materia_atrasada': qtd_materia_atrasada, 'qtd_pre_requisito_materia': qtd_pre_requisito_materia, 'qtd_materias_dependentes': qtd_materias_dependentes}
+
+def materia_atrasada(materia, semestre_aluno):
+    qtd_materia_atrasada = 0
+
+    if (semestre_aluno > materia['Semestre'] and materia['Status'] == 'Pendente'):
+        qtd_materia_atrasada = semestre_aluno - materia['Semestre']
+
+    return qtd_materia_atrasada
+
+def ranking_materias(lista_materias):
+    return sorted(lista_materias.items(), key=lambda x: x[1]['qtd_materia_atrasada'] + x[1]['qtd_pre_requisito_materia'] + x[1]['qtd_materias_dependentes'], reverse=True)
+
+def contar_pre_requisitos(id, grafoColorido):
+    contador = 0
+
+    for materia in grafoColorido.values():
+        # Verifica se a matéria alvo é um pré-requisito para a matéria atual
+        if id in materia['Pré-Requisitos']:
+            contador += 1
+
+    return contador
+
+def printDict(dictionary):
+    print(json.dumps(dictionary, sort_keys=True, indent=2))
+
+def main():
+    #semestreAtual = 3
+
+    #lista_materias_cursadas = [
+    #    'Fundamentos de Programação',
+    #    'Programação Orientada a Objetos',
+    #    'Programação Lógica e Funcional',
+    #    'Arquitetura de Computadores I',
+    #    'Cálculo A'
+    #]
+
+    #Execussão do Planejamento academico
+    grafoColorido = define_materias_cursadas()
+
+    ranking_materias_obrigatorias = recomendar_materias_obrigatórias(grafoColorido)
+
+    print("Relevância das matérias obrigatórias: ")
+    printDict(ranking_materias_obrigatorias)
 
 
-# Exemplo de inputs do usuário (não implementados aqui, é necessário adaptar para entrada real do usuário)
-ano_ingresso = 2022
-ano = 2 # Ano correspondente do curso - Segundo ano
-semestre = 1
-materias_cursadas = []  # Lista de matérias já cursadas pelo estudante (pode ser um JSON)
-area_prioritaria = 'Ciências Exatas'
-limite_materias_semestre = 5
-
-# Chamando as funções para recomendar matérias com base nas informações do estudante. Montar um output para exibi-las
-arrayObrigatórias = recomendar_materias_obrigatórias(grafo_materias, ano_ingresso, ano, semestre, materias_cursadas, area_prioritaria)
-arrayOptativas = recomendar_materias_optativas(grafo_materias, area_prioritaria)
+if __name__ == "__main__":
+    main()

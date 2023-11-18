@@ -1,4 +1,7 @@
 import json
+import semester
+import subject
+
 # Função que percorre o grafo e define as matérias já cursadas
 def define_materias_cursadas(materias_cursadas = []):
     # Colore o grafo inicial com todas matérias com status "Pendente" e define como "Cursadas" caso esteja na lista de "materias_cursadas" dada no input do aluno
@@ -104,9 +107,7 @@ def recomendar_materias_obrigatórias(grafoColorido, semestre_aluno = 1):
         # Armazena em uma lista o indice, número de relevância e a quantidade de materias as quais essa mesma matéria é pré-requisito
         relevancia_materias_obrigatorias[id] = definir_relevancia_materia(id, grafoColorido, semestre_aluno)
 
-    ranking_materias_obrigatorias = ranking_materias(relevancia_materias_obrigatorias)
-
-    return ranking_materias_obrigatorias
+    return ranking_materias(relevancia_materias_obrigatorias, grafoColorido)
 
 # Função responsável por listar os indíces das matérias obrigatórias que estão pendentes
 def materias_pendentes_obrigatorias(grafoColorido):
@@ -125,7 +126,13 @@ def definir_relevancia_materia(id, grafoColorido, semestre_aluno):
     qtd_materia_atrasada = materia_atrasada(materia, semestre_aluno)
     qtd_materias_dependentes = contar_pre_requisitos(id, grafoColorido)
 
-    return {'nome': materia['Nome'], 'qtd_materia_atrasada': qtd_materia_atrasada, 'qtd_pre_requisito_materia': qtd_pre_requisito_materia, 'qtd_materias_dependentes': qtd_materias_dependentes}
+    return {
+            'nome': materia['Nome'],
+            'qtd_materia_atrasada': qtd_materia_atrasada,
+            'qtd_pre_requisito_materia': qtd_pre_requisito_materia,
+            'qtd_materias_dependentes': qtd_materias_dependentes,
+            'semestre': materia['Semestre'],
+            }
 
 def materia_atrasada(materia, semestre_aluno):
     qtd_materia_atrasada = 0
@@ -135,8 +142,15 @@ def materia_atrasada(materia, semestre_aluno):
 
     return qtd_materia_atrasada
 
-def ranking_materias(lista_materias):
-    return sorted(lista_materias.items(), key=lambda x: x[1]['qtd_materia_atrasada'] + x[1]['qtd_pre_requisito_materia'] + x[1]['qtd_materias_dependentes'], reverse=True)
+def ranking_materias(lista_materias, grafoColorido):
+    ranking = sorted(lista_materias.items(), key=lambda x: x[1]['qtd_materia_atrasada'] + x[1]['qtd_pre_requisito_materia'] + x[1]['qtd_materias_dependentes'] - x[1]['semestre'], reverse=True)
+
+    materias_em_ordem = {}
+    for id, _ in ranking:
+        materias_em_ordem[id] = grafoColorido[id]
+
+    return materias_em_ordem
+
 
 def contar_pre_requisitos(id, grafoColorido):
     contador = 0
@@ -148,8 +162,57 @@ def contar_pre_requisitos(id, grafoColorido):
 
     return contador
 
+def montar_semestres(ranking_de_materias, semestres, semestre):
+    while len(ranking_de_materias) > 0:
+        for id in list(ranking_de_materias.keys()):
+            materia = ranking_de_materias[id]
+            # se o semestre está cheio, adiciona ele na lista de semestres e cria um novo semestre
+            if semestre.isFull():
+                semestres.append(semestre)
+                semestre = semester.Semester({}, 5, semestre.number + 1)
+                break
+
+            if esta_disponivel(materia, semestre) and pre_requisitos_alocados(semestres, materia): 
+                semestre.AddMateria(id, materia)
+                del ranking_de_materias[id]
+
+        # Quando acabar as matérias se o semestre não está vazio, adiciona ele na lista de semestres
+        if semestre.isEmpty() == False:
+            semestres.append(semestre)
+            semestre = semester.Semester({}, 5, semestre.number + 1)
+
+    return semestres
+
+def esta_disponivel(materia, semester):
+    if materia['Semestre'] % 2 == 0:
+        if semester.isEven():
+            return True
+        return False
+
+    if semester.isEven(): 
+        return False
+    return True
+
+def pre_requisitos_alocados(semestres, materia):
+    for pre_requisito in materia['Pré-Requisitos']:
+
+        requisito_encontrado = False
+        for semestre in semestres:
+            for id in semestre.materias.keys():
+                if id  == pre_requisito: 
+                    requisito_encontrado = True
+                    break
+            if requisito_encontrado:
+                break
+
+        if requisito_encontrado == False:
+            return False
+
+    return True
+
+
 def printDict(dictionary):
-    print(json.dumps(dictionary, sort_keys=True, indent=2))
+    print(json.dumps(dictionary, indent=2))
 
 def main():
     #semestreAtual = 3
@@ -164,12 +227,20 @@ def main():
 
     #Execussão do Planejamento academico
     grafoColorido = define_materias_cursadas()
-
     ranking_materias_obrigatorias = recomendar_materias_obrigatórias(grafoColorido)
 
-    print("Relevância das matérias obrigatórias: ")
-    printDict(ranking_materias_obrigatorias)
+    semesters = montar_semestres(ranking_materias_obrigatorias, [], semester.Semester({}, 5, 1))
 
+    print("Semestres:")
+    printSemesters(semesters)
+
+
+def printSemesters(semesters):
+    for sems in semesters:
+        print("\n" + "Semestre " + str(sems.number))
+        for id, materia in sems.materias.items():
+            print(id, materia['Nome'] + " " + materia['Status'] + " " + str(materia['Semestre']))
+    print("\n")
 
 if __name__ == "__main__":
     main()

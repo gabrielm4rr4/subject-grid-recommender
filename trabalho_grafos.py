@@ -4,6 +4,7 @@ import semester
 import subject
 
 HORAS_OPTATIVAS = 672
+horas_optativas_registradas = 0
 
 # Função que percorre o grafo e define as matérias já cursadas
 def define_materias_cursadas(materias_cursadas = {}):
@@ -39,47 +40,47 @@ def define_materias_cursadas(materias_cursadas = {}):
         27: {'Nome': 'Interação Humano-Computador', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [2], 'Semestre': 6, "Crédito": 64},
         28: {'Nome': 'Metodologia Científica', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [], 'Co-Requisitos': [71], 'Semestre': 7, "Crédito": 64},
         29: {'Nome': 'Projeto Integrado', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [], 'Semestre': 1, "Crédito": 32},
-        30: {'Nome': 'Arquitetura de Software', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        31: {'Nome': 'Padrões de Projeto', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [37], "Crédito": 64},
-        32: {'Nome': 'Engenharia de Software Experimental', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        33: {'Nome': 'Tópicos em DES I', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        34: {'Nome': 'Tópicos em DES II', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        35: {'Nome': 'Desenvolvimento de Jogos', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        36: {'Nome': 'Desenvolvimento para Dispositivos Móveis', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        37: {'Nome': 'Reutilização de Software', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        38: {'Nome': 'Engenharia de Software II', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [37, 39], "Crédito": 64},
-        39: {'Nome': 'Gerência de projetos de software', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        40: {'Nome': 'Desenvolvimento de sistemas web', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        41: {'Nome': 'Maratona de programação I', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [42], "Crédito": 48},
-        42: {'Nome': 'Maratona de programação II', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 48},
-        43: {'Nome': 'Banco de Dados II', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        44: {'Nome': 'Introdução à Análise de Dados', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [46], "Crédito": 64},
-        45: {'Nome': 'Banco de Dados noSQL', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        46: {'Nome': 'Tópicos em PAD', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        47: {'Nome': 'Modelagem Geométrica e Visual', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        48: {'Nome': 'Visão Computacional', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        49: {'Nome': 'Métodos Exatos', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        50: {'Nome': 'Metaheurísticas', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        51: {'Nome': 'Tópicos em MCO', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        52: {'Nome': 'Auditoria em Segurança de SI', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        53: {'Nome': 'Computação em Nuvem', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        54: {'Nome': 'Programação Paralela', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        55: {'Nome': 'Sistemas Distribuidos', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [57], "Crédito": 64},
-        56: {'Nome': 'Tópicos em RSC', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        57: {'Nome': 'Simulação e Avaliação de Desempenho', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 32},
-        58: {'Nome': 'Ciências Humanas e Sociais', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 48},
-        59: {'Nome': 'Psicologia: Relações índividuo-Grupo', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 48},
-        60: {'Nome': 'Ciências, Tecnologias e Organizações', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 48},
-        61: {'Nome': 'Comportamento Organizacional II', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 32},
-        62: {'Nome': 'Gestão de Carreira', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 32},
-        63: {'Nome': 'Psicologia Organizacional e Psicologia do Trabalho', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 32},
-        64: {'Nome': 'Tópicos em AHC', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        65: {'Nome': 'Introdução à Administração', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [68], "Crédito": 32},
-        66: {'Nome': 'Empreendedorismo e Inovação', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [70], 'Semestre': 1, "Crédito": 48},
-        67: {'Nome': 'Comportamento Organizacional I', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 48},
-        68: {'Nome': 'Gestão e Governança de TI', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        69: {'Nome': 'Economia da Informação', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
-        70: {'Nome': 'Empreendedorismo Técnológico', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 48},
+        30: {'Nome': 'Arquitetura de Software', 'Status': 'Pendente', 'Área de atuação': 'Desenvolvimento e Engenharia de Software', 'Tipo': 'Optativa', 'Pré-Requisitos': [3], "Crédito": 64},
+        31: {'Nome': 'Padrões de Projeto', 'Status': 'Pendente', 'Área de atuação': 'Desenvolvimento e Engenharia de Software', 'Tipo': 'Optativa', 'Pré-Requisitos': [3, 2], "Crédito": 64},
+        32: {'Nome': 'Engenharia de Software Experimental', 'Status': 'Pendente', 'Área de atuação': 'Desenvolvimento e Engenharia de Software', 'Tipo': 'Optativa', 'Pré-Requisitos': [3], "Crédito": 64},
+        33: {'Nome': 'Tópicos em DES I', 'Status': 'Pendente', 'Área de atuação': 'Desenvolvimento e Engenharia de Software', 'Tipo': 'Optativa', 'Pré-Requisitos': [3], "Crédito": 64},
+        34: {'Nome': 'Tópicos em DES II', 'Status': 'Pendente', 'Área de atuação': 'Desenvolvimento e Engenharia de Software', 'Tipo': 'Optativa', 'Pré-Requisitos': [3], "Crédito": 64},
+        35: {'Nome': 'Desenvolvimento de Jogos', 'Status': 'Pendente', 'Área de atuação': 'Desenvolvimento e Engenharia de Software', 'Tipo': 'Optativa', 'Pré-Requisitos': [0], "Crédito": 64},
+        36: {'Nome': 'Desenvolvimento para Dispositivos Móveis', 'Status': 'Pendente', 'Área de atuação': 'Desenvolvimento e Engenharia de Software', 'Tipo': 'Optativa', 'Pré-Requisitos': [2], "Crédito": 64},
+        37: {'Nome': 'Reutilização de Software', 'Status': 'Pendente', 'Área de atuação': 'Desenvolvimento e Engenharia de Software', 'Tipo': 'Optativa', 'Pré-Requisitos': [38, 1, 31], "Crédito": 64},
+        38: {'Nome': 'Engenharia de Software II', 'Status': 'Pendente', 'Área de atuação': 'Desenvolvimento e Engenharia de Software', 'Tipo': 'Optativa', 'Pré-Requisitos': [3], "Crédito": 64},
+        39: {'Nome': 'Gerência de projetos de software', 'Status': 'Pendente', 'Área de atuação': 'Desenvolvimento e Engenharia de Software', 'Tipo': 'Optativa', 'Pré-Requisitos': [38], "Crédito": 64},
+        40: {'Nome': 'Desenvolvimento de sistemas web', 'Status': 'Pendente', 'Área de atuação': 'Desenvolvimento e Engenharia de Software', 'Tipo': 'Optativa', 'Pré-Requisitos': [3, 5, 2], "Crédito": 64},
+        41: {'Nome': 'Maratona de programação I', 'Status': 'Pendente', 'Área de atuação': 'Desenvolvimento e Engenharia de Software', 'Tipo': 'Optativa', 'Pré-Requisitos': [13], "Crédito": 48},
+        42: {'Nome': 'Maratona de programação II', 'Status': 'Pendente', 'Área de atuação': 'Desenvolvimento e Engenharia de Software', 'Tipo': 'Optativa', 'Pré-Requisitos': [41], "Crédito": 48},
+        43: {'Nome': 'Banco de Dados II', 'Status': 'Pendente', 'Área de atuação': 'Persistência e Análise Dados', 'Tipo': 'Optativa', 'Pré-Requisitos': [5], "Crédito": 64},
+        44: {'Nome': 'Introdução à Análise de Dados', 'Status': 'Pendente', 'Área de atuação': 'Persistência e Análise Dados', 'Tipo': 'Optativa', 'Pré-Requisitos': [22], "Crédito": 64},
+        45: {'Nome': 'Banco de Dados noSQL', 'Status': 'Pendente', 'Área de atuação': 'Persistência e Análise Dados', 'Tipo': 'Optativa', 'Pré-Requisitos': [5], "Crédito": 64},
+        46: {'Nome': 'Tópicos em PAD', 'Status': 'Pendente', 'Área de atuação': 'Persistência e Análise Dados', 'Tipo': 'Optativa', 'Pré-Requisitos': [5, 44], "Crédito": 64},
+        47: {'Nome': 'Modelagem Geométrica e Visual', 'Status': 'Pendente', 'Área de atuação': 'Metodologias Computacionais e Otimização', 'Tipo': 'Optativa', 'Pré-Requisitos': [22, 7], "Crédito": 64},
+        48: {'Nome': 'Visão Computacional', 'Status': 'Pendente', 'Área de atuação': 'Metodologias Computacionais e Otimização', 'Tipo': 'Optativa', 'Pré-Requisitos': [21, 7], "Crédito": 64},
+        49: {'Nome': 'Métodos Exatos', 'Status': 'Pendente', 'Área de atuação': 'Metodologias Computacionais e Otimização', 'Tipo': 'Optativa', 'Pré-Requisitos': [22], "Crédito": 64},
+        50: {'Nome': 'Metaheurísticas', 'Status': 'Pendente', 'Área de atuação': 'Metodologias Computacionais e Otimização', 'Tipo': 'Optativa', 'Pré-Requisitos': [22], "Crédito": 64},
+        51: {'Nome': 'Tópicos em MCO', 'Status': 'Pendente', 'Área de atuação': 'Metodologias Computacionais e Otimização', 'Tipo': 'Optativa', 'Pré-Requisitos': [22], "Crédito": 64},
+        52: {'Nome': 'Auditoria em Segurança de SI', 'Status': 'Pendente', 'Área de atuação': 'Redes e Sistemas Computacionais', 'Tipo': 'Optativa', 'Pré-Requisitos': [8], "Crédito": 64},
+        53: {'Nome': 'Computação em Nuvem', 'Status': 'Pendente', 'Área de atuação': 'Redes e Sistemas Computacionais', 'Tipo': 'Optativa', 'Pré-Requisitos': [8], "Crédito": 64},
+        54: {'Nome': 'Programação Paralela', 'Status': 'Pendente', 'Área de atuação': 'Redes e Sistemas Computacionais', 'Tipo': 'Optativa', 'Pré-Requisitos': [8], "Crédito": 64},
+        55: {'Nome': 'Sistemas Distribuidos', 'Status': 'Pendente', 'Área de atuação': 'Redes e Sistemas Computacionais', 'Tipo': 'Optativa', 'Pré-Requisitos': [8], "Crédito": 64},
+        56: {'Nome': 'Tópicos em RSC', 'Status': 'Pendente', 'Área de atuação': 'Redes e Sistemas Computacionais', 'Tipo': 'Optativa', 'Pré-Requisitos': [8], "Crédito": 64},
+        57: {'Nome': 'Simulação e Avaliação de Desempenho', 'Status': 'Pendente', 'Área de atuação': 'Redes e Sistemas Computacionais', 'Tipo': 'Optativa', 'Pré-Requisitos': [55], "Crédito": 32},
+        58: {'Nome': 'Ciências Humanas e Sociais', 'Status': 'Pendente', 'Área de atuação': 'Aspectos Humanos em computação', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 48},
+        59: {'Nome': 'Psicologia: Relações índividuo-Grupo', 'Status': 'Pendente', 'Área de atuação': 'Aspectos Humanos em computação', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 48},
+        60: {'Nome': 'Ciências, Tecnologias e Organizações', 'Status': 'Pendente', 'Área de atuação': 'Aspectos Humanos em computação', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 48},
+        61: {'Nome': 'Comportamento Organizacional II', 'Status': 'Pendente', 'Área de atuação': 'Aspectos Humanos em computação', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 32},
+        62: {'Nome': 'Gestão de Carreira', 'Status': 'Pendente', 'Área de atuação': 'Aspectos Humanos em computação', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 32},
+        63: {'Nome': 'Psicologia Organizacional e Psicologia do Trabalho', 'Status': 'Pendente', 'Área de atuação': 'Aspectos Humanos em computação', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 32},
+        64: {'Nome': 'Tópicos em AHC', 'Status': 'Pendente', 'Área de atuação': 'Aspectos Humanos em computação', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
+        65: {'Nome': 'Introdução à Administração', 'Status': 'Pendente', 'Área de atuação': 'Admnistração e Gestão', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 32},
+        66: {'Nome': 'Empreendedorismo e Inovação', 'Status': 'Pendente', 'Área de atuação': 'Admnistração e Gestão', 'Tipo': 'Optativa', 'Pré-Requisitos': [], 'Semestre': 1, "Crédito": 48},
+        67: {'Nome': 'Comportamento Organizacional I', 'Status': 'Pendente', 'Área de atuação': 'Admnistração e Gestão', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 48},
+        68: {'Nome': 'Gestão e Governança de TI', 'Status': 'Pendente', 'Área de atuação': 'Admnistração e Gestão', 'Tipo': 'Optativa', 'Pré-Requisitos': [65], "Crédito": 64},
+        69: {'Nome': 'Economia da Informação', 'Status': 'Pendente', 'Área de atuação': 'Admnistração e Gestão', 'Tipo': 'Optativa', 'Pré-Requisitos': [], "Crédito": 64},
+        70: {'Nome': 'Empreendedorismo Técnológico', 'Status': 'Pendente', 'Área de atuação': 'Admnistração e Gestão', 'Tipo': 'Optativa', 'Pré-Requisitos': [66], "Crédito": 48},
         71: {'Nome': 'TCC1', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos': [], 'Co-Requisitos': [28], 'Semestre': 7, "Crédito": 140, 'Semestre Minimo': 5},
         72: {'Nome': 'TCC2', 'Status': 'Pendente', 'Área de atuação': '', 'Tipo': 'Obrigatoria', 'Pré-Requisitos':[71], 'Semestre': 8, "Crédito": 210},
     }
@@ -91,43 +92,32 @@ def define_materias_cursadas(materias_cursadas = {}):
 
     return grafoCCO
 
-# Função para recomendar matérias optativas com base nas informações do estudante
-def recomendar_materias_optativas(G, area_desejada):
-
-    # 1) Essas matéria é da área de atuação do interesse do aluno?
-    identificacao_area_de_atuacao(indice,grafoColorido)
-
-    pass
-
-def identificacao_area_de_atuacao (indice_materia, grafoColorido):
-    pass
-
 def recomendar_materias_obrigatórias(grafoColorido, semestre_aluno = 1):
-    lista_materias_pendentes_obrigatorias = materias_pendentes_obrigatorias(grafoColorido)
+    materias_obrigatorias_pendentes = materias_pendentes_obrigatorias(grafoColorido)
 
     relevancia_materias_obrigatorias = {}
-    for id in lista_materias_pendentes_obrigatorias:
+    for id in materias_obrigatorias_pendentes:
         # Armazena em uma lista o indice, número de relevância e a quantidade de materias as quais essa mesma matéria é pré-requisito
-        relevancia_materias_obrigatorias[id] = definir_relevancia_materia(id, grafoColorido, semestre_aluno)
+        relevancia_materias_obrigatorias[id] = definir_relevancia_materia(id, materias_obrigatorias_pendentes, semestre_aluno)
 
     return ranking_materias(relevancia_materias_obrigatorias, grafoColorido)
 
 # Função responsável por listar os indíces das matérias obrigatórias que estão pendentes
 def materias_pendentes_obrigatorias(grafoColorido):
-    indices_materias_pendentes_obrigatorias = []
+    materias_pendentes_obrigatorias = {}
 
-    for indice, materia in grafoColorido.items():
+    for id, materia in grafoColorido.items():
         if materia['Tipo'] == 'Obrigatoria' and materia['Status'] == 'Pendente':
-            indices_materias_pendentes_obrigatorias.append(indice)
+            materias_pendentes_obrigatorias[id] = materia
 
-    return indices_materias_pendentes_obrigatorias
+    return materias_pendentes_obrigatorias
 
-def definir_relevancia_materia(id, grafoColorido, semestre_aluno):
-    materia = grafoColorido[id]
+def definir_relevancia_materia(id, materias_obrigatorias_pendentes, semestre_aluno):
+    materia = materias_obrigatorias_pendentes[id]
 
     qtd_pre_requisito_materia = len(materia['Pré-Requisitos'])
     qtd_materia_atrasada = materia_atrasada(materia, semestre_aluno)
-    qtd_materias_dependentes = contar_pre_requisitos(id, grafoColorido)
+    qtd_materias_dependentes = contar_pre_requisitos(id, materias_obrigatorias_pendentes)
 
     return {
             'nome': materia['Nome'],
@@ -154,18 +144,43 @@ def ranking_materias(lista_materias, grafoColorido):
 
     return materias_em_ordem
 
+def materias_pendentes_optativas(grafoColorido):
+    optativas = {}
+    for id, materia in grafoColorido.items():
+        if materia['Tipo'] == 'Optativa' and materia['Status'] == 'Pendente':
+            optativas[id] = materia
 
-def contar_pre_requisitos(id, grafoColorido):
+    return optativas
+
+def ranking_materias_optativas(areas_de_conhecimento, grafo_optativas, optativas_em_ordem = {}):
+    if len(areas_de_conhecimento) == 0:
+        return optativas_em_ordem
+
+    optativas = {}
+    area = areas_de_conhecimento[0]
+
+    for id, materia in grafo_optativas.items():
+        if materia['Área de atuação'] == area:
+            optativas[id] = materia
+
+    optativas = sorted(optativas.items(), key=lambda x: len(x[1]['Pré-Requisitos']), reverse=True)
+    optativas_em_ordem.update(optativas)
+
+    return ranking_materias_optativas(areas_de_conhecimento[1:], optativas, optativas_em_ordem)
+
+def contar_pre_requisitos(id, materias_obrigatorias_pendentes):
     contador = 0
 
-    for materia in grafoColorido.values():
+    for materia in materias_obrigatorias_pendentes.values():
         # Verifica se a matéria alvo é um pré-requisito para a matéria atual
         if id in materia['Pré-Requisitos']:
             contador += 1
 
     return contador
 
-def montar_semestres(ranking_de_materias, semestres, semestre, materias_cursadas = {}):
+def montar_semestres(ranking_de_materias, ranking_optativas, semestres, semestre, materias_cursadas = {}):
+    global horas_optativas_registradas
+
     while len(ranking_de_materias) > 0:
         id_materias_disponiveis = list(ranking_de_materias.keys())
         for id in id_materias_disponiveis:
@@ -188,8 +203,36 @@ def montar_semestres(ranking_de_materias, semestres, semestre, materias_cursadas
 
         # Quando acabar as matérias se o semestre não está vazio, adiciona ele na lista de semestres
         if semestre.isEmpty() == False:
+            if horas_optativas_registradas < HORAS_OPTATIVAS and len(ranking_optativas) > 0:
+
+                for id in list(ranking_optativas.keys()):
+                    materia = ranking_optativas[id]
+                    if semestre.isFull():
+                        break
+
+                    if semestre.AddMateria(id, materia):
+                        horas_optativas_registradas += materia['Crédito']
+                        del ranking_optativas[id]
+
             semestres.append(semestre)
             semestre = semester.Semester(semestre.number + 1)
+
+    while horas_optativas_registradas < HORAS_OPTATIVAS: 
+        for id in list(ranking_optativas.keys()):
+            materia = ranking_optativas[id]
+
+            if semestre.isFull():
+                semestres.append(semestre)
+                semestre = semester.Semester(semestre.number + 1)
+                break
+
+            if horas_optativas_registradas < HORAS_OPTATIVAS and semestre.AddMateria(id, materia):
+                horas_optativas_registradas += materia['Crédito']
+                del ranking_optativas[id]
+
+        if semestre.isEmpty() == False:
+            semestres.append(semestre)
+            semestre = semester.Semester(semestre.number + 1) 
 
     return semestres
 
@@ -258,9 +301,11 @@ def main():
     #Execussão do Planejamento academico
     grafoColorido = define_materias_cursadas(lista_materias_cursadas)
     ranking_materias_obrigatorias = recomendar_materias_obrigatórias(grafoColorido, semestreAtual)
+    ranking_optativas = ranking_materias_optativas(['Desenvolvimento e Engenharia de Software'], materias_pendentes_optativas(grafoColorido))
 
-    semesters = montar_semestres(ranking_materias_obrigatorias, [], semester.Semester(semestreAtual), lista_materias_cursadas)
+    semesters = montar_semestres(ranking_materias_obrigatorias, ranking_optativas, [], semester.Semester(semestreAtual), lista_materias_cursadas)
 
+    print("Horas Optativas: " + str(horas_optativas_registradas))
     print("Semestres:")
     printSemesters(semesters)
 
@@ -270,7 +315,7 @@ def printSemesters(semesters):
         print("\n" + "Semestre " + str(sems.number) + " Crédito: " + str(sems.currentCredits))
 
         for id, materia in sems.materias.items():
-            print(id, materia['Nome'] + " " + " " + str(materia['Crédito'])+ " " + materia['Status'] + " " + str(materia['Semestre']))
+            print(id, materia['Nome'] + " " + materia['Tipo'] + " " + str(materia['Crédito'])+ " " + materia['Status'] + " " + str(materia.get('Semestre', 0)))
     print("\n")
 
 if __name__ == "__main__":

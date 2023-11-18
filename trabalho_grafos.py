@@ -153,20 +153,35 @@ def materias_pendentes_optativas(grafoColorido):
     return optativas
 
 def ranking_materias_optativas(areas_de_conhecimento, grafo_optativas, optativas_em_ordem = {}):
-    if len(areas_de_conhecimento) == 0:
-        return optativas_em_ordem
+    optativas_em_ordem = {}
 
     optativas = {}
-    area = areas_de_conhecimento[0]
+    for area in areas_de_conhecimento:
+        for id, materia in grafo_optativas.items():
+            if materia['Área de atuação'] == area:
+                optativas[id] = materia
 
+        if len(optativas) == 0:
+            continue 
+
+        optativas = sorted(optativas.items(), key=lambda x: len(x[1]['Pré-Requisitos']), reverse=True)
+        optativas_em_ordem.update(optativas)
+        optativas = {}
+
+    optativas = {}
     for id, materia in grafo_optativas.items():
-        if materia['Área de atuação'] == area:
+        if materia['Área de atuação'] not in areas_de_conhecimento:
             optativas[id] = materia
 
-    optativas = sorted(optativas.items(), key=lambda x: len(x[1]['Pré-Requisitos']), reverse=True)
-    optativas_em_ordem.update(optativas)
+        optativas = sorted(optativas.items(), key=lambda x: len(x[1]['Pré-Requisitos']), reverse=True)
+        optativas_em_ordem.update(optativas)
+        optativas = {}
 
-    return ranking_materias_optativas(areas_de_conhecimento[1:], optativas, optativas_em_ordem)
+        if len(optativas) == 0:
+            continue 
+
+    return optativas_em_ordem
+
 
 def contar_pre_requisitos(id, materias_obrigatorias_pendentes):
     contador = 0
@@ -301,7 +316,7 @@ def main():
     #Execussão do Planejamento academico
     grafoColorido = define_materias_cursadas(lista_materias_cursadas)
     ranking_materias_obrigatorias = recomendar_materias_obrigatórias(grafoColorido, semestreAtual)
-    ranking_optativas = ranking_materias_optativas(['Desenvolvimento e Engenharia de Software'], materias_pendentes_optativas(grafoColorido))
+    ranking_optativas = ranking_materias_optativas(['Redes e Sistemas Computacionais'], materias_pendentes_optativas(grafoColorido))
 
     semesters = montar_semestres(ranking_materias_obrigatorias, ranking_optativas, [], semester.Semester(semestreAtual), lista_materias_cursadas)
 

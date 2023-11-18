@@ -167,8 +167,12 @@ def contar_pre_requisitos(id, grafoColorido):
 
 def montar_semestres(ranking_de_materias, semestres, semestre, materias_cursadas = {}):
     while len(ranking_de_materias) > 0:
-        for id in list(ranking_de_materias.keys()):
-            materia = ranking_de_materias[id]
+        id_materias_disponiveis = list(ranking_de_materias.keys())
+        for id in id_materias_disponiveis:
+            if id not in ranking_de_materias.keys():
+                continue
+
+            materia = ranking_de_materias[id]  
             # se o semestre está cheio, adiciona ele na lista de semestres e cria um novo semestre
             if semestre.isFull():
                 semestres.append(semestre)
@@ -176,6 +180,9 @@ def montar_semestres(ranking_de_materias, semestres, semestre, materias_cursadas
                 break
 
             if esta_disponivel(materia, semestre) and pre_requisitos_alocados(semestres, materia, materias_cursadas): 
+                if tem_correquisitos(materia) and adicionar_corrrequisitos(semestre, materia, ranking_de_materias) == False:
+                    continue
+
                 if semestre.AddMateria(id, materia):
                     del ranking_de_materias[id]
 
@@ -185,6 +192,17 @@ def montar_semestres(ranking_de_materias, semestres, semestre, materias_cursadas
             semestre = semester.Semester(semestre.number + 1)
 
     return semestres
+
+def adicionar_corrrequisitos(semestre, materia, ranking_de_materias):
+    for id in materia['Co-Requisitos']:
+        creditos_totais = semestre.currentCredits + materia['Crédito'] + ranking_de_materias[id]['Crédito']
+
+        if creditos_totais > semestre.maxCredits or semestre.AddMateria(id, ranking_de_materias[id]) == False:
+            return False
+
+        del ranking_de_materias[id]
+
+    return True
 
 def esta_disponivel(materia, semester):
     if materia['Semestre'] % 2 == 0:
@@ -206,7 +224,7 @@ def pre_requisitos_alocados(semestres, materia, materias_cursadas):
         requisito_encontrado = False
         for semestre in semestres:
             for id in semestre.materias.keys():
-                if id  == pre_requisito: 
+                if id == pre_requisito: 
                     requisito_encontrado = True
                     break
             if requisito_encontrado:
@@ -220,6 +238,8 @@ def pre_requisitos_alocados(semestres, materia, materias_cursadas):
     
     return True
 
+def tem_correquisitos(materia):
+    return 'Co-Requisitos' in materia
 
 def printDict(dictionary):
     print(json.dumps(dictionary, indent=2))
@@ -229,8 +249,8 @@ def main():
 
     lista_materias_cursadas = {
             0: 'Fundamentos de Programação',
-            10: 'Arquitetura de Computadores I',
-            29: 'Projeto Integrado',
+            10:'Arquitetura de Computadores I',
+            29:'Projeto Integrado',
             21:'Matemática Discreta',
             19:'Cálculo A'
     }

@@ -303,14 +303,14 @@ def printDict(dictionary):
     print(json.dumps(dictionary, indent=2))
 
 def main():
-    semestreAtual = 3
+    semestreAtual = 1
 
     lista_materias_cursadas = {
-            0: 'Fundamentos de Programação',
-            10:'Arquitetura de Computadores I',
-            29:'Projeto Integrado',
-            21:'Matemática Discreta',
-            19:'Cálculo A'
+            #0: 'Fundamentos de Programação',
+            #10:'Arquitetura de Computadores I',
+            #29:'Projeto Integrado',
+            #21:'Matemática Discreta',
+            #19:'Cálculo A'
     }
 
     #Execussão do Planejamento academico
@@ -330,7 +330,7 @@ def printSemesters(semesters):
         print("\n" + "Semestre " + str(sems.number) + " Crédito: " + str(sems.currentCredits))
 
         for id, materia in sems.materias.items():
-            print(id, materia['Nome'] + " " + materia['Tipo'] + " " + str(materia['Crédito'])+ " " + materia['Status'] + " " + str(materia.get('Semestre', 0)))
+            print(id, materia['Nome'] + " " + materia['Tipo'] + " " + str(materia['Crédito'])+ " " + materia['Status'] + " " + materia['Área de atuação'] + " " +   str(materia.get('Semestre', 0)))
     print("\n")
 
 if __name__ == "__main__":

@@ -47,60 +47,6 @@ def inserir_materias_obrigatorias_e_optativas(ranking_de_materias, ranking_optat
 
     return semestres
 
-def pode_adicionar_optativas_ao_semestre(ranking_optativas):
-    return faltam_horas_optativas() and len(ranking_optativas) > 0
-
-def adiciona_optativas_ao_semestre(ranking_optativas, semestre):
-    global horas_optativas_registradas
-
-    for id in list(ranking_optativas.keys()):
-        materia = ranking_optativas[id]
-
-        if semestre.AddMateria(id, materia):
-            horas_optativas_registradas += materia['Crédito']
-            del ranking_optativas[id]
-
-        if semestre.isFull():
-            break
-
-    return semestre
-
-def inserir_materias_optativas_restantes(ranking_optativas, semestres, semestre):
-    global horas_optativas_registradas
-
-    while faltam_horas_optativas(): 
-        for id in list(ranking_optativas.keys()):
-            materia = ranking_optativas[id]
-
-            if faltam_horas_optativas() and semestre.AddMateria(id, materia):
-                horas_optativas_registradas += materia['Crédito']
-                del ranking_optativas[id]
-
-            if semestre.isFull():
-                semestres.append(semestre)
-                semestre = semester.Semester(semestre.number + 1)
-                break
-
-        if semestre.isEmpty() == False:
-            semestres.append(semestre)
-            semestre = semester.Semester(semestre.number + 1) 
-
-def faltam_horas_optativas():
-    return horas_optativas_registradas < MIN_HORAS_OPTATIVAS
-
-def adicionar_corrrequisitos(semestre, materia, ranking_de_materias):
-    for id in materia['Co-Requisitos']:
-
-        # creditos totais = creditos atuais do semestre + créditos da matéria que possui correquisito + créditos do correquisito
-        creditos_totais = semestre.currentCredits + materia['Crédito'] + ranking_de_materias[id]['Crédito']
-
-        if creditos_totais > semestre.maxCredits or semestre.AddMateria(id, ranking_de_materias[id]) == False:
-            return False
-
-        del ranking_de_materias[id]
-
-    return True
-
 def esta_disponivel(materia, semester):
     if materia.get('Semestre Minimo', 0) > semester.number:
         return False
@@ -139,3 +85,59 @@ def pre_requisitos_alocados(semestres, materia, materias_cursadas):
 
 def tem_correquisitos(materia):
     return 'Co-Requisitos' in materia
+
+def adicionar_corrrequisitos(semestre, materia, ranking_de_materias):
+    for id in materia['Co-Requisitos']:
+
+        # creditos totais = creditos atuais do semestre + créditos da matéria que possui correquisito + créditos do correquisito
+        creditos_totais = semestre.currentCredits + materia['Crédito'] + ranking_de_materias[id]['Crédito']
+
+        if creditos_totais > semestre.maxCredits or semestre.AddMateria(id, ranking_de_materias[id]) == False:
+            return False
+
+        del ranking_de_materias[id]
+
+    return True
+
+def pode_adicionar_optativas_ao_semestre(ranking_optativas):
+    return faltam_horas_optativas() and len(ranking_optativas) > 0
+
+def faltam_horas_optativas():
+    return horas_optativas_registradas < MIN_HORAS_OPTATIVAS
+
+def adiciona_optativas_ao_semestre(ranking_optativas, semestre):
+    global horas_optativas_registradas
+
+    for id in list(ranking_optativas.keys()):
+        materia = ranking_optativas[id]
+
+        if semestre.AddMateria(id, materia):
+            horas_optativas_registradas += materia['Crédito']
+            del ranking_optativas[id]
+
+        if semestre.isFull():
+            break
+
+    return semestre
+
+def inserir_materias_optativas_restantes(ranking_optativas, semestres, semestre):
+    global horas_optativas_registradas
+
+    while faltam_horas_optativas(): 
+        for id in list(ranking_optativas.keys()):
+            materia = ranking_optativas[id]
+
+            if faltam_horas_optativas() and semestre.AddMateria(id, materia):
+                horas_optativas_registradas += materia['Crédito']
+                del ranking_optativas[id]
+
+            if semestre.isFull():
+                semestres.append(semestre)
+                semestre = semester.Semester(semestre.number + 1)
+                break
+
+        if semestre.isEmpty() == False:
+            semestres.append(semestre)
+            semestre = semester.Semester(semestre.number + 1) 
+
+

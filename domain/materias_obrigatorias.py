@@ -3,7 +3,6 @@ def recomendar_materias_obrigatórias(grafoColorido, semestre_aluno = 1):
 
     relevancia_materias_obrigatorias = {}
     for id in materias_obrigatorias_pendentes:
-        # Armazena em uma lista o indice, número de relevância e a quantidade de materias as quais essa mesma matéria é pré-requisito
         relevancia_materias_obrigatorias[id] = definir_relevancia_materia(id, materias_obrigatorias_pendentes, semestre_aluno)
 
     return ranking_materias(relevancia_materias_obrigatorias, grafoColorido)
@@ -17,19 +16,20 @@ def materias_pendentes_obrigatorias(grafoColorido):
 
     return materias_pendentes_obrigatorias
 
+
+# Relevância da matéria é dada pelos seguintes dados:
+# semestre - Relevância é Inversamente Proporcial
+# qtd_pre_requisito_materia - Relevância Diretamente Proporcional
+# qtd_materia_atrasada - Relevância Diratemente Proporcional
+# qtd_materias_dependentes - Relenvância Diretamente Proporcional
 def definir_relevancia_materia(id, materias_obrigatorias_pendentes, semestre_aluno):
     materia = materias_obrigatorias_pendentes[id]
 
-    qtd_pre_requisito_materia = len(materia['Pré-Requisitos'])
-    qtd_materia_atrasada = materia_atrasada(materia, semestre_aluno)
-    qtd_materias_dependentes = contar_pre_requisitos(id, materias_obrigatorias_pendentes)
-
     return {
-            'nome': materia['Nome'],
-            'qtd_materia_atrasada': qtd_materia_atrasada,
-            'qtd_pre_requisito_materia': qtd_pre_requisito_materia,
-            'qtd_materias_dependentes': qtd_materias_dependentes,
             'semestre': materia['Semestre'],
+            'qtd_pre_requisito_materia': len(materia['Pré-Requisitos']),
+            'qtd_materia_atrasada': materia_atrasada(materia, semestre_aluno),
+            'qtd_materias_dependentes': contar_pre_requisitos(id, materias_obrigatorias_pendentes),
             }
 
 def materia_atrasada(materia, semestre_aluno):
@@ -44,12 +44,15 @@ def contar_pre_requisitos(id, materias_obrigatorias_pendentes):
     contador = 0
 
     for materia in materias_obrigatorias_pendentes.values():
-        # Verifica se a matéria alvo é um pré-requisito para a matéria atual
+        # Verifica se a matéria atual é um pré-requisito para alguma outra matéria
         if id in materia['Pré-Requisitos']:
             contador += 1
 
     return contador
 
+# O rankiamento das matérias é feito através do cálculo: 
+# Relevancia Total: qtd_materia_atrasada + qtd_pre_requisito_materia + qtd_materias_dependentes - semestre
+# Quanto maior o valor, maior a relevância da matéria
 def ranking_materias(lista_materias, grafoColorido):
     ranking = sorted(lista_materias.items(), key=lambda x: x[1]['qtd_materia_atrasada'] + x[1]['qtd_pre_requisito_materia'] + x[1]['qtd_materias_dependentes'] - x[1]['semestre'], reverse=True)
 

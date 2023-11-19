@@ -19,20 +19,22 @@ def main():
             #19:'Cálculo A'
     }
 
+    area_conhecimento_optativas = ['Redes e Sistemas Computacionais']
+
     #Execussão do Planejamento academico
     grafoColorido = gradecco.define_materias_cursadas(materias_cursadas)
-    ranking_materias_obrigatorias = materias_orbigatorias.recomendar_materias_obrigatórias(grafoColorido, semestre_atual)
-    ranking_optativas = materias_optativas.ranking_materias_optativas(['Redes e Sistemas Computacionais'], materias_optativas.materias_pendentes_optativas(grafoColorido))
+    ranking_obrigatorias = materias_orbigatorias.recomendar(grafoColorido, semestre_atual)
+    ranking_optativas = materias_optativas.recomendar(area_conhecimento_optativas, materias_optativas.pendentes(grafoColorido))
 
     if gerar_matrizes:
         matriz.gerar_matriz_area_atuacao(grafoColorido)
         matriz.gerar_matriz_de_prerequisitos(grafoColorido)
-        matriz.gerar_ordenacao_topologica(ranking_materias_obrigatorias)
+        matriz.gerar_ordenacao_topologica(ranking_obrigatorias)
         matriz.gerar_ordenacao_topologica(ranking_optativas)
 
 
     semesters = recomendador.montar_semestres(
-            ranking_materias_obrigatorias, 
+            ranking_obrigatorias, 
             ranking_optativas, 
             semestre_atual, 
             materias_cursadas,

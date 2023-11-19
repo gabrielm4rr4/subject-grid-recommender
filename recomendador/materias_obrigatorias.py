@@ -1,4 +1,4 @@
-def recomendar_materias_obrigatórias(grafoColorido, semestre_aluno = 1):
+def recomendar(grafoColorido, semestre_aluno = 1):
     materias_obrigatorias_pendentes = materias_pendentes_obrigatorias(grafoColorido)
 
     relevancia_materias_obrigatorias = {}

@@ -1,4 +1,4 @@
-def materias_pendentes_optativas(grafoColorido):
+def pendentes(grafoColorido):
     optativas = {}
     for id, materia in grafoColorido.items():
         if materia['Tipo'] == 'Optativa' and materia['Status'] == 'Pendente':
@@ -6,7 +6,7 @@ def materias_pendentes_optativas(grafoColorido):
 
     return optativas
 
-def ranking_materias_optativas(areas_de_conhecimento, grafo_optativas, optativas_em_ordem = {}):
+def recomendar(areas_de_conhecimento, grafo_optativas, optativas_em_ordem = {}):
     optativas_em_ordem = optativas_area_de_conhecimento(areas_de_conhecimento, grafo_optativas, optativas_em_ordem)
     return optativas_fora_area_de_conhecimento(areas_de_conhecimento, grafo_optativas, optativas_em_ordem)
 

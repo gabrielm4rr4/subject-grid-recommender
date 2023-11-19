@@ -10,8 +10,8 @@ def montar_semestres(ranking_de_materias, ranking_optativas, semestre_atual, mat
     semestres = []
     semestre = semester.Semester(semestre_atual)
 
-    inserir_materias_obrigatorias_e_optativas(ranking_de_materias, ranking_optativas, semestres, semestre, materias_cursadas)
-    inserir_materias_optativas_restantes(ranking_optativas, semestres, semestre)
+    semestres, semestre = inserir_materias_obrigatorias_e_optativas(ranking_de_materias, ranking_optativas, semestres, semestre, materias_cursadas)
+    semestres = inserir_materias_optativas_restantes(ranking_optativas, semestres, semestre)
 
     print("Horas Optativas: " + str(horas_optativas_registradas))
     return semestres
@@ -49,7 +49,7 @@ def inserir_materias_obrigatorias_e_optativas(ranking_de_materias, ranking_optat
             semestres.append(semestre)
             semestre = semester.Semester(semestre.number + 1)
 
-    return semestres
+    return semestres, semestre
 
 def esta_disponivel(materia, semester):
     if materia.get('Semestre Minimo', 0) > semester.number:
@@ -115,7 +115,7 @@ def adiciona_optativas_ao_semestre(ranking_optativas, semestre):
     for id in list(ranking_optativas.keys()):
         materia = ranking_optativas[id]
 
-        if semestre.AddMateria(id, materia):
+        if faltam_horas_optativas() and semestre.AddMateria(id, materia):
             horas_optativas_registradas += materia['Crédito']
             del ranking_optativas[id]
 
@@ -147,4 +147,4 @@ def inserir_materias_optativas_restantes(ranking_optativas, semestres, semestre)
             semestres.append(semestre)
             semestre = semester.Semester(semestre.number + 1) 
 
-
+    return semestres

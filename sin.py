@@ -3,8 +3,6 @@ import execute
 def main():
     semestre_atual = 1
 
-    gerar_matrizes = True
-
     materias_cursadas = {
             #0: 'Fundamentos de Programação',
     }

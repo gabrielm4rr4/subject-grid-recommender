@@ -29,7 +29,7 @@ def gerarMatriz(materias, file_name):
                 continue
 
             id2, materia2 = list(materias.items())[j]
-            if id in materia2['Pré-Requisitos']:
+            if id in materia2['Pré-Requisitos']: 
                 matrizAdj[i][j] = 1
 
     # Create a DataFrame from the adjacency matrix
@@ -38,3 +38,6 @@ def gerarMatriz(materias, file_name):
     # Write the DataFrame to a CSV file
     df.to_csv(file_name, index=False, header=False)
 
+
+def ordenar_topologicamente(materias):
+    return ordem_topologica.ordernar(materias)

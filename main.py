@@ -23,14 +23,16 @@ def main():
 
     #Execussão do Planejamento academico
     grafoColorido = gradecco.define_materias_cursadas(materias_cursadas)
+
     ranking_obrigatorias = materias_orbigatorias.recomendar(grafoColorido, semestre_atual)
     ranking_optativas = materias_optativas.recomendar(area_conhecimento_optativas, materias_optativas.pendentes(grafoColorido))
 
     if gerar_matrizes:
         matriz.gerar_matriz_area_atuacao(grafoColorido)
         matriz.gerar_matriz_de_prerequisitos(grafoColorido)
-        matriz.gerar_ordenacao_topologica(ranking_obrigatorias)
-        matriz.gerar_ordenacao_topologica(ranking_optativas)
+        pendentes_obrigatorias = materias_orbigatorias.materias_pendentes_obrigatorias(grafoColorido)
+        pendentes_obrigatorias = sorted(pendentes_obrigatorias.items(), key=lambda x: len(x[1]['Pré-Requisitos']))
+        matriz.gerar_ordenacao_topologica(matriz.ordenar_topologicamente(pendentes_obrigatorias))
 
 
     semesters = recomendador.montar_semestres(
@@ -47,7 +49,7 @@ def printSemesters(semesters):
         print("\n" + "Semestre " + str(sems.number) + " Crédito: " + str(sems.currentCredits))
 
         for id, materia in sems.materias.items():
-            print(id, materia['Nome'] + " " + materia['Tipo'] + " " + str(materia['Crédito'])+ " " + materia['Status'] + " " + materia['Área de atuação'] + " " +   str(materia.get('Semestre', 0)))
+            print(id, materia['Nome'] + " " + materia['Tipo'] + "i,  " + str(materia['Crédito'])+ " " + materia['Status'] + " " + materia['Área de atuação'] + " " +   str(materia.get('Semestre', 0)))
     print("\n")
 
 if __name__ == "__main__":

@@ -7,13 +7,17 @@ def gerar(materias, colors = {}, file_name = 'adj_matrix.csv'):
     G = nx.DiGraph(adjacency_matrix)
     color_per_node = [colors.get(node, 'skyblue') for node in G.nodes()]
 
-    pos = {node:(node,0) for node in G.nodes()}
+    positions = []
+    for id, materia in materias.items():
+        positions.append(str(id))
+
+    pos = {node: (positions[node], 0) for node in G.nodes()}
+
     labels = []
     for id, materia in materias.items():
         labels.append(str(id))
 
     node_labels = {node: labels[node] for node in G.nodes()}
-
     plt.figure(figsize=(15,5))
 
     ax = plt.gca()
@@ -28,3 +32,20 @@ def gerar(materias, colors = {}, file_name = 'adj_matrix.csv'):
 
     plt.box(False)
     plt.show()
+
+def ordernar(materias):
+    p_map = {}
+    while(len(materias) > 0):
+        for i, value  in enumerate(materias):
+            id, materia = value
+
+            todo_pre_requisito = True
+            for pre_requisito in materia['Pré-Requisitos']:
+                if pre_requisito not in p_map.keys():
+                    todo_pre_requisito = False
+                    break
+
+            if todo_pre_requisito:
+                p_map[id] = materia
+                del materias[i]
+    return p_map

@@ -6,7 +6,10 @@ from . import semester
 MIN_HORAS_OPTATIVAS = 672
 horas_optativas_registradas = 0
 
-def montar_semestres(ranking_de_materias, ranking_optativas, semestres, semestre, materias_cursadas = {}):
+def montar_semestres(ranking_de_materias, ranking_optativas, semestre_atual, materias_cursadas):
+    semestres = []
+    semestre = semester.Semester(semestre_atual)
+
     inserir_materias_obrigatorias_e_optativas(ranking_de_materias, ranking_optativas, semestres, semestre, materias_cursadas)
     inserir_materias_optativas_restantes(ranking_optativas, semestres, semestre)
 

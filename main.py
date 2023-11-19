@@ -9,9 +9,9 @@ import recomendador.materias_obrigatorias as materias_orbigatorias
 import recomendador.materias_optativas as materias_optativas
 
 def main():
-    semestreAtual = 1
-
-    lista_materias_cursadas = {
+    semestre_atual = 1
+    gerar_matrizes = True
+    materias_cursadas = {
             #0: 'Fundamentos de Programação',
             #10:'Arquitetura de Computadores I',
             #29:'Projeto Integrado',
@@ -20,19 +20,24 @@ def main():
     }
 
     #Execussão do Planejamento academico
-    grafoColorido = gradecco.define_materias_cursadas(lista_materias_cursadas)
-    matriz.gerar_matriz_area_atuacao(grafoColorido)
-    matriz.gerar_matriz_de_prerequisitos(grafoColorido)
-
-    ranking_materias_obrigatorias = materias_orbigatorias.recomendar_materias_obrigatórias(grafoColorido, semestreAtual)
-    matriz.gerar_ordenacao_topologica(ranking_materias_obrigatorias)
-
+    grafoColorido = gradecco.define_materias_cursadas(materias_cursadas)
+    ranking_materias_obrigatorias = materias_orbigatorias.recomendar_materias_obrigatórias(grafoColorido, semestre_atual)
     ranking_optativas = materias_optativas.ranking_materias_optativas(['Redes e Sistemas Computacionais'], materias_optativas.materias_pendentes_optativas(grafoColorido))
-    matriz.gerar_ordenacao_topologica(ranking_optativas)
 
-    semesters = recomendador.montar_semestres(ranking_materias_obrigatorias, ranking_optativas, [], semester.Semester(semestreAtual), lista_materias_cursadas)
+    if gerar_matrizes:
+        matriz.gerar_matriz_area_atuacao(grafoColorido)
+        matriz.gerar_matriz_de_prerequisitos(grafoColorido)
+        matriz.gerar_ordenacao_topologica(ranking_materias_obrigatorias)
+        matriz.gerar_ordenacao_topologica(ranking_optativas)
 
-    print("Semestres:")
+
+    semesters = recomendador.montar_semestres(
+            ranking_materias_obrigatorias, 
+            ranking_optativas, 
+            semestre_atual, 
+            materias_cursadas,
+            )
+
     printSemesters(semesters)
 
 def printSemesters(semesters):
@@ -45,4 +50,3 @@ def printSemesters(semesters):
 
 if __name__ == "__main__":
     main()
-

@@ -17,7 +17,7 @@ def gerar_ordenacao_topologica(materias):
     gerarMatriz(materias, 'ord_topologica.csv')
     ordem_topologica.gerar(materias, {}, 'ord_topologica.csv')
 
-def gerarMatriz(materias, file_name = 'adj_matrix.csv'):
+def gerarMatriz(materias, file_name):
     # Cria uma matriz de adjacência
     matrizAdj = np.zeros((len(materias), len(materias)), dtype=int)
 

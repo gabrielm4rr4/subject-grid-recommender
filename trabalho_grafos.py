@@ -2,6 +2,8 @@ import json
 import random
 import semester
 import subject
+import matriz 
+
 
 HORAS_OPTATIVAS = 672
 horas_optativas_registradas = 0
@@ -303,20 +305,26 @@ def printDict(dictionary):
     print(json.dumps(dictionary, indent=2))
 
 def main():
-    semestreAtual = 1
+    semestreAtual = 3
 
     lista_materias_cursadas = {
-            #0: 'Fundamentos de Programação',
-            #10:'Arquitetura de Computadores I',
-            #29:'Projeto Integrado',
-            #21:'Matemática Discreta',
-            #19:'Cálculo A'
+            0: 'Fundamentos de Programação',
+            10:'Arquitetura de Computadores I',
+            29:'Projeto Integrado',
+            21:'Matemática Discreta',
+            19:'Cálculo A'
     }
 
     #Execussão do Planejamento academico
     grafoColorido = define_materias_cursadas(lista_materias_cursadas)
+    matriz.gerar_matriz_area_atuacao(grafoColorido)
+    matriz.gerar_matriz_de_prerequisitos(grafoColorido)
+
     ranking_materias_obrigatorias = recomendar_materias_obrigatórias(grafoColorido, semestreAtual)
+    matriz.gerar_ordenacao_topologica(ranking_materias_obrigatorias)
+
     ranking_optativas = ranking_materias_optativas(['Redes e Sistemas Computacionais'], materias_pendentes_optativas(grafoColorido))
+    matriz.gerar_ordenacao_topologica(ranking_optativas)
 
     semesters = montar_semestres(ranking_materias_obrigatorias, ranking_optativas, [], semester.Semester(semestreAtual), lista_materias_cursadas)
 

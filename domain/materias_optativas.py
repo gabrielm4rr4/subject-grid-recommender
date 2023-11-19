@@ -7,8 +7,10 @@ def materias_pendentes_optativas(grafoColorido):
     return optativas
 
 def ranking_materias_optativas(areas_de_conhecimento, grafo_optativas, optativas_em_ordem = {}):
-    optativas_em_ordem = {}
+    optativas_em_ordem = optativas_area_de_conhecimento(areas_de_conhecimento, grafo_optativas, optativas_em_ordem)
+    return optativas_fora_area_de_conhecimento(areas_de_conhecimento, grafo_optativas, optativas_em_ordem)
 
+def optativas_area_de_conhecimento(areas_de_conhecimento, grafo_optativas, optativas_em_ordem):
     optativas = {}
     for area in areas_de_conhecimento:
         for id, materia in grafo_optativas.items():
@@ -22,19 +24,18 @@ def ranking_materias_optativas(areas_de_conhecimento, grafo_optativas, optativas
         optativas_em_ordem.update(optativas)
         optativas = {}
 
+    return optativas_em_ordem
+
+def optativas_fora_area_de_conhecimento(areas_de_conhecimento, grafo_optativas, optativas_em_ordem):
     optativas = {}
     for id, materia in grafo_optativas.items():
         if materia['Área de atuação'] not in areas_de_conhecimento:
             optativas[id] = materia
 
-        optativas = sorted(optativas.items(), key=lambda x: len(x[1]['Pré-Requisitos']), reverse=True)
-        optativas_em_ordem.update(optativas)
-        optativas = {}
+    if len(optativas) == 0:
+        return optativas_em_ordem
 
-        if len(optativas) == 0:
-            continue 
+    optativas = sorted(optativas.items(), key=lambda x: len(x[1]['Pré-Requisitos']), reverse=True)
+    optativas_em_ordem.update(optativas)
 
     return optativas_em_ordem
-
-
-

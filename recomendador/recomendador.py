@@ -1,9 +1,6 @@
 import json
 import random
 
-from . import matriz
-from . import gradecco
-from . import gradesin
 from . import semester
 
 MIN_HORAS_OPTATIVAS = 672

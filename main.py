@@ -1,9 +1,12 @@
-import domain.matriz as matriz
-import domain.gradecco as gradecco
-import domain.semester as semester
-import domain.recomendador as recomendador
-import domain.materias_obrigatorias as materias_orbigatorias
-import domain.materias_optativas as materias_optativas
+import matriz.matriz as matriz
+
+import grades.cco as gradecco
+import grades.sin as gradesin
+
+import recomendador.semester as semester
+import recomendador.recomendador as recomendador
+import recomendador.materias_obrigatorias as materias_orbigatorias
+import recomendador.materias_optativas as materias_optativas
 
 def main():
     semestreAtual = 1

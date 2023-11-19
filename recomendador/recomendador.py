@@ -16,6 +16,10 @@ def montar_semestres(ranking_de_materias, ranking_optativas, semestre_atual, mat
     print("Horas Optativas: " + str(horas_optativas_registradas))
     return semestres
 
+# Insere as matérias obrigatórias e optativas nos semestres:
+# insere matérias obrigatórias prioritárias primeiro
+# caso sobre carga horária e não hajá mais nenhuma matéria obrigatória que possa ser inserida,
+# então insere matérias optativas
 def inserir_materias_obrigatorias_e_optativas(ranking_de_materias, ranking_optativas, semestres, semestre, materias_cursadas):
 
     while len(ranking_de_materias) > 0:
@@ -120,6 +124,9 @@ def adiciona_optativas_ao_semestre(ranking_optativas, semestre):
 
     return semestre
 
+# Após todas as orbigatórias terem sido inseridas
+# caso ainda falte horas optativas
+# insere as matérias optativas restantes até completar as horas optativas
 def inserir_materias_optativas_restantes(ranking_optativas, semestres, semestre):
     global horas_optativas_registradas
 

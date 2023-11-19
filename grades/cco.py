@@ -1,3 +1,7 @@
+
+# Função para definir o grafo do curso de Ciência da Computação
+# O grafo é representado por um dicionário, onde cada chave é um id de uma matéria e o valor é um dicionário com os dados da matéria
+# A matérias já cursadas recebem o status de 'Cursada' e as matérias que ainda não foram cursadas recebem o status de 'Pendente'
 def define_materias_cursadas(materias_cursadas = {}):
     # Colore o grafo inicial com todas matérias com status "Pendente" e define como "Cursadas" caso esteja na lista de "materias_cursadas" dada no input do aluno
     grafoCCO = {

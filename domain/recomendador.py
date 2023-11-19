@@ -6,60 +6,26 @@ from . import gradecco
 from . import gradesin
 from . import semester
 
-HORAS_OPTATIVAS = 672
+MIN_HORAS_OPTATIVAS = 672
 horas_optativas_registradas = 0
 
-def materias_pendentes_optativas(grafoColorido):
-    optativas = {}
-    for id, materia in grafoColorido.items():
-        if materia['Tipo'] == 'Optativa' and materia['Status'] == 'Pendente':
-            optativas[id] = materia
-
-    return optativas
-
-def ranking_materias_optativas(areas_de_conhecimento, grafo_optativas, optativas_em_ordem = {}):
-    optativas_em_ordem = {}
-
-    optativas = {}
-    for area in areas_de_conhecimento:
-        for id, materia in grafo_optativas.items():
-            if materia['Área de atuação'] == area:
-                optativas[id] = materia
-
-        if len(optativas) == 0:
-            continue 
-
-        optativas = sorted(optativas.items(), key=lambda x: len(x[1]['Pré-Requisitos']), reverse=True)
-        optativas_em_ordem.update(optativas)
-        optativas = {}
-
-    optativas = {}
-    for id, materia in grafo_optativas.items():
-        if materia['Área de atuação'] not in areas_de_conhecimento:
-            optativas[id] = materia
-
-        optativas = sorted(optativas.items(), key=lambda x: len(x[1]['Pré-Requisitos']), reverse=True)
-        optativas_em_ordem.update(optativas)
-        optativas = {}
-
-        if len(optativas) == 0:
-            continue 
-
-    return optativas_em_ordem
-
-
-
 def montar_semestres(ranking_de_materias, ranking_optativas, semestres, semestre, materias_cursadas = {}):
-    global horas_optativas_registradas
+    inserir_materias_obrigatorias_e_optativas(ranking_de_materias, ranking_optativas, semestres, semestre, materias_cursadas)
+    inserir_materias_optativas_restantes(ranking_optativas, semestres, semestre)
+
+    print("Horas Optativas: " + str(horas_optativas_registradas))
+    return semestres
+
+def inserir_materias_obrigatorias_e_optativas(ranking_de_materias, ranking_optativas, semestres, semestre, materias_cursadas):
 
     while len(ranking_de_materias) > 0:
-        id_materias_disponiveis = list(ranking_de_materias.keys())
-        for id in id_materias_disponiveis:
+        for id in list(ranking_de_materias.keys()):
+
             if id not in ranking_de_materias.keys():
                 continue
 
             materia = ranking_de_materias[id]  
-            # se o semestre está cheio, adiciona ele na lista de semestres e cria um novo semestre
+
             if semestre.isFull():
                 semestres.append(semestre)
                 semestre = semester.Semester(semestre.number + 1)
@@ -74,42 +40,58 @@ def montar_semestres(ranking_de_materias, ranking_optativas, semestres, semestre
 
         # Quando acabar as matérias se o semestre não está vazio, adiciona ele na lista de semestres
         if semestre.isEmpty() == False:
-            if horas_optativas_registradas < HORAS_OPTATIVAS and len(ranking_optativas) > 0:
-
-                for id in list(ranking_optativas.keys()):
-                    materia = ranking_optativas[id]
-                    if semestre.isFull():
-                        break
-
-                    if semestre.AddMateria(id, materia):
-                        horas_optativas_registradas += materia['Crédito']
-                        del ranking_optativas[id]
-
+            if pode_adicionar_optativas_ao_semestre(ranking_optativas):
+                semestre = adiciona_optativas_ao_semestre(ranking_optativas, semestre)
             semestres.append(semestre)
             semestre = semester.Semester(semestre.number + 1)
 
-    while horas_optativas_registradas < HORAS_OPTATIVAS: 
+    return semestres
+
+def pode_adicionar_optativas_ao_semestre(ranking_optativas):
+    return faltam_horas_optativas() and len(ranking_optativas) > 0
+
+def adiciona_optativas_ao_semestre(ranking_optativas, semestre):
+    global horas_optativas_registradas
+
+    for id in list(ranking_optativas.keys()):
+        materia = ranking_optativas[id]
+
+        if semestre.AddMateria(id, materia):
+            horas_optativas_registradas += materia['Crédito']
+            del ranking_optativas[id]
+
+        if semestre.isFull():
+            break
+
+    return semestre
+
+def inserir_materias_optativas_restantes(ranking_optativas, semestres, semestre):
+    global horas_optativas_registradas
+
+    while faltam_horas_optativas(): 
         for id in list(ranking_optativas.keys()):
             materia = ranking_optativas[id]
+
+            if faltam_horas_optativas() and semestre.AddMateria(id, materia):
+                horas_optativas_registradas += materia['Crédito']
+                del ranking_optativas[id]
 
             if semestre.isFull():
                 semestres.append(semestre)
                 semestre = semester.Semester(semestre.number + 1)
                 break
 
-            if horas_optativas_registradas < HORAS_OPTATIVAS and semestre.AddMateria(id, materia):
-                horas_optativas_registradas += materia['Crédito']
-                del ranking_optativas[id]
-
         if semestre.isEmpty() == False:
             semestres.append(semestre)
             semestre = semester.Semester(semestre.number + 1) 
 
-    print("Horas Optativas: " + str(horas_optativas_registradas))
-    return semestres
+def faltam_horas_optativas():
+    return horas_optativas_registradas < MIN_HORAS_OPTATIVAS
 
 def adicionar_corrrequisitos(semestre, materia, ranking_de_materias):
     for id in materia['Co-Requisitos']:
+
+        # creditos totais = creditos atuais do semestre + créditos da matéria que possui correquisito + créditos do correquisito
         creditos_totais = semestre.currentCredits + materia['Crédito'] + ranking_de_materias[id]['Crédito']
 
         if creditos_totais > semestre.maxCredits or semestre.AddMateria(id, ranking_de_materias[id]) == False:
@@ -120,36 +102,38 @@ def adicionar_corrrequisitos(semestre, materia, ranking_de_materias):
     return True
 
 def esta_disponivel(materia, semester):
+    if materia.get('Semestre Minimo', 0) > semester.number:
+        return False
+
     if materia['Semestre'] % 2 == 0:
         if semester.isEven():
             return True
         return False
 
-    if semester.isEven(): 
-        return False
-
-    if materia.get('Semestre Minimo', 0) > semester.number:
-        return False
+    if semester.isEven():
+        return False 
 
     return True
 
 def pre_requisitos_alocados(semestres, materia, materias_cursadas):
     for pre_requisito in materia['Pré-Requisitos']:
-
         requisito_encontrado = False
+
+        # Busca nos semestres anteriores
         for semestre in semestres:
             for id in semestre.materias.keys():
-                if id == pre_requisito: 
+                if pre_requisito == id: 
                     requisito_encontrado = True
                     break
+
             if requisito_encontrado:
                 break
 
+        # Caso não tenha achado ainda busca nas matérias cursadas
         if requisito_encontrado == False:
             if pre_requisito in materias_cursadas.keys():
                 return True 
-            else:
-                return False
+            return False
     
     return True
 

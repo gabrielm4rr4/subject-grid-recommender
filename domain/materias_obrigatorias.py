@@ -8,7 +8,6 @@ def recomendar_materias_obrigatórias(grafoColorido, semestre_aluno = 1):
 
     return ranking_materias(relevancia_materias_obrigatorias, grafoColorido)
 
-# Função responsável por listar os indíces das matérias obrigatórias que estão pendentes
 def materias_pendentes_obrigatorias(grafoColorido):
     materias_pendentes_obrigatorias = {}
 
